@@ -28,7 +28,7 @@ DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'allauth',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -110,16 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #Authentication settings
 SITE_ID = 1
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',  # new
-)
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_UNIQUE_EMAIL = True
-LOGIN_REDIRECT_URL = 'index'
-ACCOUNT_LOGOUT_REDIRECT = 'index'
+LOGIN_URL = "/auth/login/"
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
 
 
 # Internationalization
