@@ -26,14 +26,20 @@ class UserTests(InitTest):
         """URL-адрес использует соответствующий шаблон."""
         for template, reverse_name in self.templates_url_names.items():
             with self.subTest(template=template):
-                response = self.authorized_client.get(reverse_name)
+                if reverse_name == reverse('login'):
+                    response = self.guest_client.get(reverse_name)
+                else:
+                    response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
 
     def test_pages_address_available(self):
         """URL-адрес доступен."""
         for url_address in self.templates_url_names.values():
             with self.subTest(url_address):
-                response = self.authorized_client.get(url_address)
+                if url_address == reverse('login'):
+                    response = self.guest_client.get(url_address)
+                else:
+                    response = self.authorized_client.get(url_address)
                 self.assertEqual(response.status_code, 200)
 
     def test_signup_and_redirect(self):
@@ -57,3 +63,6 @@ class UserTests(InitTest):
         response = self.guest_client.post(reverse('login'), data=test_user)
         self.assertRedirects(response, reverse('index'))
 
+    def auth_user_login_page_redirect(self):
+        response = self.authorized_client.get(reverse('login'))
+        self.assertRedirects(response,reverse('index'))
