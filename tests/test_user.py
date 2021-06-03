@@ -9,7 +9,8 @@ class UserTests(InitTest):
         templates_url_names = {
             'registration/login.html': reverse('login'),
             'registration/signup.html': reverse('signup'),
-            'registration/password_change_form.html': reverse('password_change'),
+            'registration/password_change_form.html': reverse(
+                'password_change'),
             'registration/password_reset_form.html': reverse('password_reset'),
         }
         test_user1 = {
@@ -63,6 +64,9 @@ class UserTests(InitTest):
         response = self.guest_client.post(reverse('login'), data=test_user)
         self.assertRedirects(response, reverse('index'))
 
-    def auth_user_login_page_redirect(self):
+    def test_auth_user_login_page_redirect(self):
+        """Проверяем редирект auth пользователя со страницы login"""
         response = self.authorized_client.get(reverse('login'))
-        self.assertRedirects(response,reverse('index'))
+        self.assertRedirects(response, reverse('index'))
+
+
