@@ -15,20 +15,20 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (RecipeIngredientInline,)
     list_display = (
         'id', 'title', 'author', 'slug', 'cooking_time',
-        'get_favorite_count', 'created'
+        'created', #'get_favorite_count',
     )
     list_filter = ('author', 'tags__title')
     search_fields = ('title', 'author__username')
     autocomplete_fields = ('author',)
     ordering = ('-created',)
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.annotate(favorite_count=Count('favored_by'))
-
-    @staticmethod
-    def get_favorite_count(obj):
-        return obj.favorite_count
+    # def get_queryset(self, request):
+    #    queryset = super().get_queryset(request)
+    #    return queryset.annotate(favorite_count=Count('favored_by'))
+    #
+    # @staticmethod
+    # def get_favorite_count(obj):
+    #    return obj.favorite_count
 
 
 @admin.register(Ingredient)
