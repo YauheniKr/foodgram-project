@@ -73,6 +73,9 @@ class Tag(models.Model):
     display_name = models.CharField('Имя тега для шаблона', max_length=50)
     color = models.CharField('Цвет тега', max_length=50)
 
+    class Meta:
+        ordering = ('title',)
+
     def __str__(self):
         return self.title
 
