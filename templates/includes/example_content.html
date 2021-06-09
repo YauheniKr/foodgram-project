@@ -1,12 +1,13 @@
 {% load static %}
 {% load thumbnail %}
+{% load user_filter %}
 <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 
 <div class="card-list">
     {% for recipe in recipes %}
     <div class="card" data-id="120">
         <a href="#" class="link" target="_blank">
-            {% thumbnail recipe.image "480x480" as im %}
+            {% thumbnail recipe.image '360x240' crop='center' as im %}
                 <img src="{{ im.url }}" alt="{{ recipe.title }}" class="single-card__image">
             {% endthumbnail %}
         </a>
@@ -19,8 +20,8 @@
                 {% endfor %}
             </ul>
             <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> {{ recipe.time | time}}</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">{{ recipe.author.name }}</a></p>
+                <p class="card__text"><span class="icon-time"></span> {{ recipe.cooking_time | duration}}</p>
+                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">{{ recipe.author.first_name }}</a></p>
             </div>
         </div>
         <div class="card__footer">
