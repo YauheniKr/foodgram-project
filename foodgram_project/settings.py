@@ -72,6 +72,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'user_filter':
+                    'recipes.template_tags.user_filter',
+
+            }
         },
     },
 ]
