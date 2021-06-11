@@ -2,6 +2,7 @@ from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.shortcuts import reverse
 
 User = get_user_model()
 
@@ -36,6 +37,9 @@ class Recipe(models.Model):
     cooking_time = models.DurationField()
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     tags = models.ManyToManyField('Tag', related_name='recipes')
+
+    def get_absolute_url(self):
+        return reverse('index')
 
     class Meta:
         ordering = ('-created',)
@@ -86,4 +90,3 @@ class Follow(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='following'
     )
-
