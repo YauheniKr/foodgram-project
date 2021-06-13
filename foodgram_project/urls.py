@@ -6,11 +6,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('auth/login/',
          auth_views.LoginView.as_view(redirect_authenticated_user=True),
          name='login'),
-    path("auth/", include("user.urls")),
-    path("auth/", include("django.contrib.auth.urls")),
+    path("auth/", include('user.urls')),
+    path("auth/", include('django.contrib.auth.urls')),
+    path('api/', include('api.urls')),
     path('', include('recipes.urls')),
 ]
 
