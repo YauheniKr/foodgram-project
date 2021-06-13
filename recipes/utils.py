@@ -1,4 +1,5 @@
 from decimal import Decimal
+from datetime import timedelta
 
 from django.conf import settings
 from django.core.paginator import Paginator
@@ -32,12 +33,12 @@ def save_recipe(request, form):
     with transaction.atomic():
         recipe = form.save(commit=False)
         recipe.author = request.user
+        recipe.cooking_time = recipe.cooking_time*60
         recipe.save()
 
         objs = []
         ingredients = get_ingredients(request)
         for parts in ingredients:
-            print(parts.items())
             ingredient = get_object_or_404(Ingredient, title=parts.get('name'),
                                            unit__dimension=parts.get('unit'))
             objs.append(
