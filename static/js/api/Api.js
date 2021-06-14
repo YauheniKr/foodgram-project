@@ -109,8 +109,8 @@ class Api {
             return Promise.reject(e.statusText)
         })
   }
-    getIngredients  (text)  {
-        return fetch(`/ingredients?query=${text}`, {
+      getIngredients  (text)  {
+        return fetch(`${this.apiUrl}/ingredients/?query=${text}`, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -123,3 +123,4 @@ class Api {
             })
     }
 }
+

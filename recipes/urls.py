@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import HomePage, AddRecipePage
+from .views import HomePage, AddRecipePage #recipe_new
 
 urlpatterns = [
     path('', HomePage.as_view(), name='index'),
