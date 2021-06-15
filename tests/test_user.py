@@ -24,7 +24,7 @@ class UserTests(InitTest):
         self.test_user1 = test_user1
 
     def test_urls_uses_correct_template(self):
-        """URL-адрес использует соответствующий шаблон."""
+        """URL-адрес user использует соответствующий шаблон."""
         for template, reverse_name in self.templates_url_names.items():
             with self.subTest(template=template):
                 if reverse_name == reverse('login'):
@@ -34,7 +34,7 @@ class UserTests(InitTest):
                 self.assertTemplateUsed(response, template)
 
     def test_pages_address_available(self):
-        """URL-адрес доступен."""
+        """URL-адрес user доступен."""
         for url_address in self.templates_url_names.values():
             with self.subTest(url_address):
                 if url_address == reverse('login'):
