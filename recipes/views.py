@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, reverse
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .models import Recipe, Ingredient, Unit, Tag
 from .forms import RecipeForm
 from .utils import get_request_tags, save_recipe
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomePage(ListView):
     template_name = 'index.html'
     context_object_name = 'recipes'
+    paginate_by = 6
 
     def get_queryset(self):
         tags = get_request_tags(self.request)
@@ -16,8 +17,13 @@ class HomePage(ListView):
             'author').prefetch_related('tags').distinct()
         return recipes
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePage, self).get_context_data(**kwargs)
+        context['all_tags'] = Tag.objects.all()
+        return context
 
-class AddRecipePage(CreateView):
+
+class AddRecipePage(CreateView, LoginRequiredMixin):
     template_name = 'formRecipe.html'
     form_class = RecipeForm
 
@@ -26,20 +32,15 @@ class AddRecipePage(CreateView):
         return super().form_valid(form)
 
 
-"""@login_required
-def recipe_new(request):
-    form = RecipeForm(request.POST or None, files=request.FILES or None)
-
-    if form.is_valid():
-        recipe = save_recipe(request, form)
-
-        return redirect(
-            reverse('index')
-        )
-
-    context = {'form': form}
-    return render(request, 'formRecipe.html', context)"""
+class DetailRecipePage(DetailView):
+    context_object_name = 'recipe'
+    model = Recipe
+    template_name = 'singlePage.html'
 
 
-class ListRecipePage(ListView):
-    pass
+class EditRecipePage(UpdateView):
+    model = Recipe
+    template_name = 'singlePage.html'
+    context_object_name = 'recipe'
+    fields = ['title', ]
+    pk_url_kwarg = 'pk'
