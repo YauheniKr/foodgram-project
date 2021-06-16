@@ -10,7 +10,7 @@ from .models import Ingredient, RecipeIngredient
 
 
 def get_request_tags(request):
-    return request.GET.getlist('tag', ('breakfast', 'lunch', 'dinner'))
+    return request.GET.getlist('tag', ('Завтрак', 'Обед', 'Ужин'))
 
 
 def get_ingredients(request):
@@ -30,15 +30,17 @@ def get_ingredients(request):
 
 
 def save_recipe(request, form):
+
     with transaction.atomic():
         recipe = form.save(commit=False)
         recipe.author = request.user
-        recipe.cooking_time = recipe.cooking_time*60
+        recipe.cooking_time = recipe.cooking_time * 60
         recipe.save()
 
         objs = []
         ingredients = get_ingredients(request)
         for parts in ingredients:
+
             ingredient = get_object_or_404(Ingredient, title=parts.get('name'),
                                            unit__dimension=parts.get('unit'))
             objs.append(
@@ -52,3 +54,9 @@ def save_recipe(request, form):
         RecipeIngredient.objects.bulk_create(objs)
         form.save_m2m()
         return recipe
+
+
+def edit_recipe(request, form, instance):
+    with transaction.atomic():
+        RecipeIngredient.objects.filter(recipe=instance).delete()
+        return save_recipe(request, form)
