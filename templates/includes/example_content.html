@@ -1,21 +1,20 @@
 {% load static %}
 {% load thumbnail %}
 {% load user_filter %}
+{% block css %}
 <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
 
 <div class="card-list">
     {% for recipe in recipes %}
     <div class="card" data-id="120">
-        <a href="#" class="link" target="_blank">
-            {% thumbnail recipe.image '360x240' crop='center' as im %}
-                <img src="{{ im.url }}" alt="{{ recipe.title }}" class="single-card__image">
-            {% endthumbnail %}
+        <a href="{% url 'detail_recipe' recipe.id %}" class="link" target="_blank">
+            {% include 'includes/image_block.html' %}
         </a>
         <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">{{ recipe.title }}</a>
+            <a class="card__title link" href="{% url 'detail_recipe' recipe.id %}" target="_blank">{{ recipe.title }}</a>
             <ul class="card__items">
                 {% for tag in recipe.tags.all %}
-                    {{ tag.colour }}
                     <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.title }}</span></li>
                 {% endfor %}
             </ul>
