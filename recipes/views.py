@@ -6,7 +6,7 @@ from .models import Recipe, Ingredient, Unit, Tag
 from .forms import RecipeForm
 from .utils import get_request_tags, save_recipe, edit_recipe
 from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+                                        UserPassesTestMixin)
 
 
 class MyPaginator(Paginator):
@@ -62,7 +62,7 @@ class DetailRecipePage(DetailView):
     template_name = 'singlePage.html'
 
 
-class EditRecipePage(LoginRequiredMixin, UpdateView):
+class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Recipe
     template_name = 'formRecipe.html'
     context_object_name = 'recipe'
@@ -83,3 +83,7 @@ class EditRecipePage(LoginRequiredMixin, UpdateView):
         args = self.kwargs["pk"]
         success_url = reverse_lazy('detail_recipe', args=[args])
         return success_url
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user or self.request.user.is_superuser
