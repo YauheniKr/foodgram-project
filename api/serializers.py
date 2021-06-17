@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from recipes.models import Unit, Ingredient
+from recipes.models import Unit, Ingredient, Follow
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -10,3 +10,10 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Ingredient
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ['author']
+        model = Follow
