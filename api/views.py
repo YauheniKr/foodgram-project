@@ -23,6 +23,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     lookup_field = 'author'
 
     def perform_create(self, serializer):
+        print(self.request.data)
         author = get_object_or_404(User, id=self.request.data.get('author'))
         serializer.save(user=self.request.user, author=author)
 
