@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="single-card" data-id="371" data-author="12">
+    <div class="single-card" data-id="371" data-author="{{ recipe.author.id }}">
         {% include 'includes/image_block.html' %}
         <div class="single-card__info">
             <div class="single-card__header-info">
