@@ -1,6 +1,8 @@
 from django import template
 from datetime import datetime, timedelta
 
+from recipes.models import Follow
+
 register = template.Library()
 
 
@@ -44,3 +46,19 @@ def set_tag_qs(request, tag):
 
     new_req.setlist('tag', tags)
     return new_req.urlencode()
+
+
+@register.filter
+def conjoin(number, args):
+    args = [arg.strip() for arg in args.split(',')]
+    last_digit = int(number) % 10
+    if last_digit == 1:
+        return f'{number} {args[0]}'
+    elif 1 < last_digit < 5:
+        return f'{number} {args[1]}'
+    elif last_digit > 4 or last_digit == 0:
+        return f'{number} {args[2]}'
+
+@register.filter
+def is_subscribed_to(user, author):
+    return Follow.objects.filter(user=user, author=author).exists()
