@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
+from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from .models import Recipe, Ingredient, Unit, Tag
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, \
+    View
+from .models import Recipe, Ingredient, Unit, Tag, Follow, User
 from .forms import RecipeForm
 from .utils import get_request_tags, save_recipe, edit_recipe
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -87,3 +89,17 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         obj = self.get_object()
         return obj.author == self.request.user or self.request.user.is_superuser
+
+
+class ListFollowingPage(View):
+
+    def get(self, request):
+        authors = User.objects.filter(following__user=self.request.user). \
+            prefetch_related('recipes').order_by('username'). \
+            annotate(recipe_count=Count('recipes'))
+        paginator = Paginator(authors, 10)
+        page_number = self.request.GET.get('page')
+        page = paginator.get_page(page_number)
+        return render(request, 'myFollow.html', {'authors': authors,
+                                                 'page': page,
+                                                 'paginator': paginator})
