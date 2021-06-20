@@ -117,7 +117,6 @@ class Api {
         })
             .then( e => {
                 if(e.ok) {
-                    console.log(e)
                     return e.json()
                 }
                 return Promise.reject(e.statusText)
