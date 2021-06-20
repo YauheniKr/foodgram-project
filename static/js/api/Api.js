@@ -79,13 +79,14 @@ class Api {
           return Promise.reject(e.statusText)
   }
   addFavorites (id)  {
-    return fetch(`/favorites`, {
+    return fetch(`${apiUrl}/favorites/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
       },
       body: JSON.stringify({
-        id: id
+        recipe: id
       })
     })
         .then( e => {
@@ -96,18 +97,17 @@ class Api {
         })
   }
   removeFavorites (id) {
-    return fetch(`/favorites/${id}`, {
+    return fetch(`${apiUrl}/favorites/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
       }
-    })
-        .then( e => {
+    });
             if(e.ok) {
                 return e.json()
             }
             return Promise.reject(e.statusText)
-        })
   }
       getIngredients  (text)  {
         return fetch(`${apiUrl}/ingredients/?query=${text}`, {
