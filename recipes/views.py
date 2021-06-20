@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, \
     View
-from .models import Recipe, Ingredient, Unit, Tag, Follow, User
+from .models import Recipe, Ingredient, Unit, Tag, Follow, User, Favorite
 from .forms import RecipeForm
 from .utils import get_request_tags, save_recipe, edit_recipe
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -103,7 +103,7 @@ class ListFollowingPage(View):
 
 
 class ListRecipeAuthorPage(ListView):
-    template_name = 'index.html'
+    template_name = 'authorRecipe.html'
     context_object_name = 'recipes'
     paginate_by = 6
     paginator_class = MyPaginator
@@ -118,6 +118,27 @@ class ListRecipeAuthorPage(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListRecipeAuthorPage, self).get_context_data(**kwargs)
+        tags = get_request_tags(self.request)
+        context['all_tags'] = Tag.objects.all()
+        context['tags'] = tags
+        return context
+
+
+class ListFavoritePage(ListView):
+    template_name = 'favorite.html'
+    context_object_name = 'recipes'
+    paginate_by = 6
+    paginator_class = MyPaginator
+
+    def get_queryset(self):
+        tags = get_request_tags(self.request)
+        recipes = Recipe.objects.filter(
+            favorite_by__user=self.request.user, tags__title__in=tags
+        ).select_related('author').prefetch_related('tags').distinct()
+        return recipes
+
+    def get_context_data(self, **kwargs):
+        context = super(ListFavoritePage, self).get_context_data(**kwargs)
         tags = get_request_tags(self.request)
         context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
