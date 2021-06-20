@@ -29,7 +29,7 @@ class MyPaginator(Paginator):
 class HomePage(ListView):
     template_name = 'index.html'
     context_object_name = 'recipes'
-    paginate_by = 4
+    paginate_by = 6
     paginator_class = MyPaginator
 
     def get_queryset(self):
@@ -39,13 +39,10 @@ class HomePage(ListView):
         return recipes
 
     def get_context_data(self, **kwargs):
+        tags = get_request_tags(self.request)
         context = super(HomePage, self).get_context_data(**kwargs)
         context['all_tags'] = Tag.objects.all()
-        page = self.request.GET.get('page', 1)
-        recipes = HomePage.get_queryset(self)
-        paginator = self.paginator_class(recipes, self.paginate_by)
-        recipes = paginator.page(page)
-        context['recipes'] = recipes
+        context['tags'] = tags
         return context
 
 
@@ -103,3 +100,25 @@ class ListFollowingPage(View):
         return render(request, 'myFollow.html', {'authors': authors,
                                                  'page': page,
                                                  'paginator': paginator})
+
+
+class ListRecipeAuthorPage(ListView):
+    template_name = 'index.html'
+    context_object_name = 'recipes'
+    paginate_by = 6
+    paginator_class = MyPaginator
+
+    def get_queryset(self):
+        tags = get_request_tags(self.request)
+        author = self.kwargs.get('pk')
+        recipes = Recipe.objects.filter(tags__title__in=tags,
+                                        author=author).select_related(
+            'author').prefetch_related('tags').distinct()
+        return recipes
+
+    def get_context_data(self, **kwargs):
+        context = super(ListRecipeAuthorPage, self).get_context_data(**kwargs)
+        tags = get_request_tags(self.request)
+        context['all_tags'] = Tag.objects.all()
+        context['tags'] = tags
+        return context
