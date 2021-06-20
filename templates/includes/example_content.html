@@ -7,7 +7,7 @@
 
 <div class="card-list">
     {% for recipe in recipes %}
-    <div class="card" data-id="120">
+    <div class="card" data-id="{{ recipe.id }}">
         <a href="{% url 'detail_recipe' recipe.id %}" class="link" target="_blank">
             {% include 'includes/image_block.html' %}
         </a>
@@ -25,7 +25,8 @@
         </div>
         <div class="card__footer">
             <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-            <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
+            {% csrf_token %}
+            {% include 'includes/favorites_button.html' %}
         </div>
     </div>
     {% endfor %}

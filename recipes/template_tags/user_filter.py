@@ -1,7 +1,7 @@
 from django import template
 from datetime import datetime, timedelta
 
-from recipes.models import Follow
+from recipes.models import Follow, Favorite
 
 register = template.Library()
 
@@ -68,3 +68,8 @@ def is_subscribed_to(user, author):
 @register.filter
 def tags_to_url_params(tags):
     return '&' + '&'.join([f'tag={tag}' for tag in tags])
+
+
+@register.filter
+def is_favored_by(recipe, user):
+    return Favorite.objects.filter(recipe=recipe, user=user).exists()
