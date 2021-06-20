@@ -59,6 +59,12 @@ def conjoin(number, args):
     elif last_digit > 4 or last_digit == 0:
         return f'{number} {args[2]}'
 
+
 @register.filter
 def is_subscribed_to(user, author):
     return Follow.objects.filter(user=user, author=author).exists()
+
+
+@register.filter
+def tags_to_url_params(tags):
+    return '&' + '&'.join([f'tag={tag}' for tag in tags])
