@@ -114,3 +114,19 @@ class Favorite(models.Model):
                 name='unique_favorite'
             )
         ]
+
+
+class Purchase(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='purchase_by')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name='recipes'
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='unique_purchase'
+            )
+        ]
