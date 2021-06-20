@@ -1,9 +1,10 @@
 from rest_framework import permissions, viewsets, filters, mixins
 from rest_framework.decorators import permission_classes, action
-from .serializers import IngredientSerializer, SubscriptionSerializer, FavoriteSerializer
+from .serializers import IngredientSerializer, SubscriptionSerializer, \
+    FavoriteSerializer, PurchaseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from recipes.models import Ingredient, Follow, User, Recipe, Favorite
+from recipes.models import Ingredient, Follow, User, Recipe, Favorite, Purchase
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -48,3 +49,14 @@ class FavoriteViewSet(viewsets.ModelViewSet):
         instance = get_object_or_404(Favorite, recipe=recipe, user=request.user)
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PurchaseViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = PurchaseSerializer
+    queryset = Purchase.objects.all()
+    lookup_field = 'recipe'
+
+    def perform_create(self, serializer):
+        recipe = get_object_or_404(Recipe, id=self.request.data.get('recipe'))
+        serializer.save(user=self.request.user, recipe=recipe)
