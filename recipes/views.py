@@ -148,19 +148,8 @@ class ListFavoritePage(ListView):
 class ListPurchasePage(ListView):
     template_name = 'shopList.html'
     context_object_name = 'recipes'
-    paginate_by = 6
-    paginator_class = MyPaginator
 
     def get_queryset(self):
-        tags = get_request_tags(self.request)
-        recipes = Recipe.objects.filter(
-            favorite_by__user=self.request.user, tags__title__in=tags
-        ).select_related('author').prefetch_related('tags').distinct()
+        recipes = self.request.user.purchase_by.all()
         return recipes
 
-    def get_context_data(self, **kwargs):
-        context = super(ListPurchasePage, self).get_context_data(**kwargs)
-        tags = get_request_tags(self.request)
-        context['all_tags'] = Tag.objects.all()
-        context['tags'] = tags
-        return context
