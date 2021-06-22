@@ -54,8 +54,10 @@ class FavoriteViewSet(viewsets.ModelViewSet):
 class PurchaseViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = PurchaseSerializer
-    queryset = Purchase.objects.all()
     lookup_field = 'recipe'
+
+    def get_queryset(self):
+        return self.request.user.purchase_by.all()
 
     def perform_create(self, serializer):
         recipe = get_object_or_404(Recipe, id=self.request.data.get('recipe'))
