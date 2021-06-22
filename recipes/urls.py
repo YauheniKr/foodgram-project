@@ -13,6 +13,6 @@ urlpatterns = [
          name='author_page'),
     path('favoroties/<int:pk>', ListFavoritePage.as_view(),
          name='favorate_page'),
-    path('favoroties/<int:pk>', ListPurchasePage.as_view(),
+    path('purchases/', ListPurchasePage.as_view(),
          name='purchase_page')
 ]
