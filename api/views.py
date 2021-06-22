@@ -60,3 +60,10 @@ class PurchaseViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         recipe = get_object_or_404(Recipe, id=self.request.data.get('recipe'))
         serializer.save(user=self.request.user, recipe=recipe)
+
+    def destroy(self, request, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, id=kwargs.get('recipe'))
+        instance = get_object_or_404(Purchase, recipe=recipe,
+                                     user=self.request.user)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
