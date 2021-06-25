@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import (HomePage, AddRecipePage, DetailRecipePage, EditRecipePage,
                     ListFollowingPage, ListRecipeAuthorPage, ListFavoritePage,
-                    ListPurchasePage,)
+                    ListPurchasePage, DownloadPurchasePage)
 
 urlpatterns = [
     path('', HomePage.as_view(), name='index'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path('favoroties/<int:pk>', ListFavoritePage.as_view(),
          name='favorate_page'),
     path('purchases/', ListPurchasePage.as_view(),
-         name='purchase_page')
+         name='purchase_page'),
+    path('download_purchases/', DownloadPurchasePage.as_view(), name='download_purchases')
 ]

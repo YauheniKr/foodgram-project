@@ -30,7 +30,6 @@ def get_ingredients(request):
 
 
 def save_recipe(request, form):
-
     with transaction.atomic():
         recipe = form.save(commit=False)
         recipe.author = request.user
@@ -40,7 +39,6 @@ def save_recipe(request, form):
         objs = []
         ingredients = get_ingredients(request)
         for parts in ingredients:
-
             ingredient = get_object_or_404(Ingredient, title=parts.get('name'),
                                            unit__dimension=parts.get('unit'))
             objs.append(

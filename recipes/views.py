@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.db.models import Count
+from django.shortcuts import render, redirect, HttpResponse
+from django.db.models import Count, Sum
 from django.core.paginator import Paginator, EmptyPage
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, \
@@ -9,6 +9,7 @@ from .forms import RecipeForm
 from .utils import get_request_tags, save_recipe, edit_recipe
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         UserPassesTestMixin)
+from django.views.generic import DetailView
 
 
 class MyPaginator(Paginator):
@@ -88,7 +89,7 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.author == self.request.user or self.request.user.is_superuser
 
 
-class ListFollowingPage(View):
+class ListFollowingPage(LoginRequiredMixin, View):
 
     def get(self, request):
         authors = User.objects.filter(following__user=self.request.user). \
@@ -124,7 +125,7 @@ class ListRecipeAuthorPage(ListView):
         return context
 
 
-class ListFavoritePage(ListView):
+class ListFavoritePage(LoginRequiredMixin, ListView):
     template_name = 'favorite.html'
     context_object_name = 'recipes'
     paginate_by = 6
@@ -145,11 +146,48 @@ class ListFavoritePage(ListView):
         return context
 
 
-class ListPurchasePage(ListView):
+class ListPurchasePage(LoginRequiredMixin, ListView):
     template_name = 'shopList.html'
     context_object_name = 'recipes'
 
     def get_queryset(self):
         recipes = self.request.user.purchase_by.all()
+        title = 'recipe__ingredients__title'
+        dimension = 'recipe__ingredients__unit__dimension'
+        quantity = 'recipe__ingredients_amounts__quantity'
+        ingredients = (self.request.user.purchase_by.select_related('recipe').
+                       order_by(title).values(title, dimension).annotate(
+            amount=Sum(quantity)).all())
         return recipes
 
+
+class DownloadPurchasePage(LoginRequiredMixin, ListView):
+    filename = 'my_pdf.pdf'
+    template_name = 'my_template.html'
+
+    def get_queryset(self):
+        title = 'recipe__ingredients__title'
+        dimension = 'recipe__ingredients__unit__dimension'
+        quantity = 'recipe__ingredients_amounts__quantity'
+        ingredients = (self.request.user.purchase_by.select_related('recipe').
+                       order_by(title).values(title, dimension).
+                       annotate(amount=Sum(quantity)).all())
+        return ingredients
+
+    def render_to_response(self, context, **response_kwargs):
+        title = 'recipe__ingredients__title'
+        dimension = 'recipe__ingredients__unit__dimension'
+        text = 'Список покупок:\n\n'
+        for number, ingredient in enumerate(context.get('object_list'), start=1):
+            amount = ingredient['amount']
+            text += (
+                f'{number}) '
+                f'{ingredient[title]} - '
+                f'{amount} '
+                f'{ingredient[dimension]}\n'
+            )
+
+        response = HttpResponse(text, content_type='text/plain')
+        filename = 'shopping_list.txt'
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
