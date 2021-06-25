@@ -12,26 +12,10 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
 from django.views.generic import DetailView
 
 
-class MyPaginator(Paginator):
-    def validate_number(self, number):
-        try:
-            return super().validate_number(number)
-        except EmptyPage:
-            if int(number) > 1:
-                # return the last page
-                return self.num_pages
-            elif int(number) < 1:
-                # return the first page
-                return 1
-            else:
-                raise
-
-
 class HomePage(ListView):
     template_name = 'index.html'
     context_object_name = 'recipes'
     paginate_by = 6
-    paginator_class = MyPaginator
 
     def get_queryset(self):
         tags = get_request_tags(self.request)
@@ -107,7 +91,6 @@ class ListRecipeAuthorPage(ListView):
     template_name = 'authorRecipe.html'
     context_object_name = 'recipes'
     paginate_by = 6
-    paginator_class = MyPaginator
 
     def get_queryset(self):
         tags = get_request_tags(self.request)
@@ -129,7 +112,6 @@ class ListFavoritePage(LoginRequiredMixin, ListView):
     template_name = 'favorite.html'
     context_object_name = 'recipes'
     paginate_by = 6
-    paginator_class = MyPaginator
 
     def get_queryset(self):
         tags = get_request_tags(self.request)
@@ -162,8 +144,6 @@ class ListPurchasePage(LoginRequiredMixin, ListView):
 
 
 class DownloadPurchasePage(LoginRequiredMixin, ListView):
-    filename = 'my_pdf.pdf'
-    template_name = 'my_template.html'
 
     def get_queryset(self):
         title = 'recipe__ingredients__title'
@@ -178,7 +158,8 @@ class DownloadPurchasePage(LoginRequiredMixin, ListView):
         title = 'recipe__ingredients__title'
         dimension = 'recipe__ingredients__unit__dimension'
         text = 'Список покупок:\n\n'
-        for number, ingredient in enumerate(context.get('object_list'), start=1):
+        for number, ingredient in enumerate(context.get('object_list'),
+                                            start=1):
             amount = ingredient['amount']
             text += (
                 f'{number}) '
