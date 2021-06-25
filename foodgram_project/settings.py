@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'rest_framework',
+    'django_filters',
+    'sorl.thumbnail',
+    'user',
+    'recipes',
 ]
 
 MIDDLEWARE = [
@@ -55,10 +60,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'foodgram_project.urls'
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [TEMPLATES_DIR]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -67,7 +73,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'recipes.context_processors.shop_list_size',
             ],
+            'libraries': {
+                'user_filter':
+                    'recipes.template_tags.user_filter',
+
+            }
         },
     },
 ]
@@ -118,7 +130,7 @@ LOGOUT_REDIRECT_URL = "index"
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -134,7 +146,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
-STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIAFILES_DIRS = (str(BASE_DIR.joinpath('media')),)
@@ -144,6 +156,11 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('mediafiles'))
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # указываем директорию, в которую будут складываться файлы писем
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+
+REST_FRAMEWORK = {
+    'SEARCH_PARAM': 'query',
+}
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

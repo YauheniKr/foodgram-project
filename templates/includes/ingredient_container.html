@@ -1,0 +1,7 @@
+<div class="form__field-item-ingredient" id="ing_{{ forloop.counter }}">
+    <span> {{ i.ingredient.title }} {{ i.quantity }} {{ i.ingredient.unit }}</span>
+    <span class="form__field-item-delete"></span>
+    <input id="nameIngredient_{{ forloop.counter }}" name="nameIngredient_{{ forloop.counter }}" type="hidden" value="{{ i.ingredient.title }}">
+    <input id="valueIngredient_{{ forloop.counter }}" name="valueIngredient_{{ forloop.counter }}" type="hidden" value="{{ i.quantity }}">
+    <input id="unitsIngredient_{{ forloop.counter }}" name="unitsIngredient_{{ forloop.counter }}" type="hidden" value="{{ i.ingredient.unit}}">
+</div>

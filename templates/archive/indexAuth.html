@@ -1,5 +1,7 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
+
+{% comment %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Рецепты</title>
     <link rel="stylesheet" href="./pages/index.css">
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 </head>
 <body class="body">
   <header class="header">
@@ -174,5 +177,6 @@
 
   <script src="./js/api/Api.js"></script>
   <script src="indexAuth.js"></script>
+ {% endcomment %}
 </body>
 </html>
