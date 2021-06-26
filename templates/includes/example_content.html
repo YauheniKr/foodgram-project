@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 {% endblock %}
 
+{% if follow == 'follow' %}
+    {% include 'includes/follow_author.html' %}
+{% endif %}
 <div class="card-list">
     {% for recipe in recipes %}
     <div class="card" data-id="{{ recipe.id }}">

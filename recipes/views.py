@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         UserPassesTestMixin)
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django.views.generic import ListView, CreateView, UpdateView, View
@@ -103,8 +103,11 @@ class ListRecipeAuthorPage(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListRecipeAuthorPage, self).get_context_data(**kwargs)
         tags = get_request_tags(self.request)
+        author = self.kwargs.get('pk')
+        author_recipes = get_object_or_404(User, id=author)
         context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
+        context['author'] = author_recipes
         return context
 
 
