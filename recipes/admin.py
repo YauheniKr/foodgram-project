@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.db.models import Count
 
-from .models import Ingredient, Recipe, RecipeIngredient, Tag, Unit
+from .models import (Ingredient, Recipe, RecipeIngredient, Tag, Unit, Favorite,
+                     Purchase, Follow)
 
 
 class RecipeIngredientInline(admin.TabularInline):
@@ -15,20 +16,20 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (RecipeIngredientInline,)
     list_display = (
         'id', 'title', 'author', 'slug', 'cooking_time',
-        'created', #'get_favorite_count',
+        'created', 'get_favorite_count',
     )
     list_filter = ('author', 'tags__title')
     search_fields = ('title', 'author__username')
     autocomplete_fields = ('author',)
     ordering = ('-created',)
 
-    # def get_queryset(self, request):
-    #    queryset = super().get_queryset(request)
-    #    return queryset.annotate(favorite_count=Count('favored_by'))
-    #
-    # @staticmethod
-    # def get_favorite_count(obj):
-    #    return obj.favorite_count
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.annotate(favorite_count=Count('favored_by'))
+
+    @staticmethod
+    def get_favorite_count(obj):
+        return obj.favorite_count
 
 
 @admin.register(Ingredient)
@@ -46,3 +47,21 @@ class UnitAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('title', 'color', 'display_name')
     list_filter = ('title',)
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'author')
+    autocomplete_fields = ('user', 'author')
+
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'recipe')
+    autocomplete_fields = ('user', 'recipe')
+
+
+@admin.register(Purchase)
+class PurchaseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'recipe')
+    autocomplete_fields = ('user', 'recipe')
