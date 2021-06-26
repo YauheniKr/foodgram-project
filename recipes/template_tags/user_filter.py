@@ -62,7 +62,7 @@ def conjoin(number, args):
 
 @register.filter
 def is_subscribed_to(user, author):
-    return Follow.objects.filter(user=user, author=author).exists()
+    return author.following.filter(user=user).exists()
 
 
 @register.filter
