@@ -1,8 +1,5 @@
 from decimal import Decimal
-from datetime import timedelta
 
-from django.conf import settings
-from django.core.paginator import Paginator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 

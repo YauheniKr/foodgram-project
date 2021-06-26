@@ -1,15 +1,15 @@
-from django.shortcuts import render, redirect, HttpResponse
-from django.db.models import Count, Sum
-from django.core.paginator import Paginator, EmptyPage
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, \
-    View
-from .models import Recipe, Ingredient, Unit, Tag, Follow, User, Favorite
-from .forms import RecipeForm
-from .utils import get_request_tags, save_recipe, edit_recipe
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         UserPassesTestMixin)
+from django.core.paginator import Paginator
+from django.db.models import Count, Sum
+from django.shortcuts import render, HttpResponse
+from django.urls import reverse_lazy
 from django.views.generic import DetailView
+from django.views.generic import ListView, CreateView, UpdateView, View
+
+from .forms import RecipeForm
+from .models import Recipe, Tag, User
+from .utils import get_request_tags, save_recipe, edit_recipe
 
 
 class HomePage(ListView):

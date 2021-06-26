@@ -1,13 +1,12 @@
-from rest_framework import permissions, viewsets, filters, mixins
-from rest_framework.decorators import permission_classes, action
-from .serializers import IngredientSerializer, SubscriptionSerializer, \
-    FavoriteSerializer, PurchaseSerializer
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.response import Response
-from recipes.models import Ingredient, Follow, User, Recipe, Favorite, Purchase
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework import viewsets, filters
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from recipes.models import Ingredient, Follow, User, Recipe, Favorite, Purchase
+from .serializers import (IngredientSerializer, SubscriptionSerializer,
+                          FavoriteSerializer, PurchaseSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

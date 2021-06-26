@@ -1,4 +1,5 @@
-import os, json
+import json
+import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'foodgram_project.settings')
@@ -6,7 +7,6 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 import django
 from recipes.models import Unit, Ingredient
-from django.utils.text import slugify
 
 django.setup()
 
