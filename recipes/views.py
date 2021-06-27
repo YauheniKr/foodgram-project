@@ -25,8 +25,7 @@ class HomePage(ListView):
 
     def get_context_data(self, **kwargs):
         tags = get_request_tags(self.request)
-        context = super(HomePage, self).get_context_data(**kwargs)
-        context['all_tags'] = Tag.objects.all()
+        context = super().get_context_data(**kwargs)
         context['tags'] = tags
         return context
 
@@ -54,8 +53,8 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     pk_url_kwarg = 'pk'
 
     def get_context_data(self, **kwargs):
-        context = super(EditRecipePage, self).get_context_data(**kwargs)
-        context['all_tags'] = Tag.objects.all()
+        context = super().get_context_data(**kwargs)
+        #context['all_tags'] = Tag.objects.all()
         return context
 
     def form_valid(self, form):
@@ -101,11 +100,11 @@ class ListRecipeAuthorPage(ListView):
         return recipes
 
     def get_context_data(self, **kwargs):
-        context = super(ListRecipeAuthorPage, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         tags = get_request_tags(self.request)
         author = self.kwargs.get('pk')
         author_recipes = get_object_or_404(User, id=author)
-        context['all_tags'] = Tag.objects.all()
+        #context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
         context['author'] = author_recipes
         return context
@@ -124,9 +123,9 @@ class ListFavoritePage(LoginRequiredMixin, ListView):
         return recipes
 
     def get_context_data(self, **kwargs):
-        context = super(ListFavoritePage, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         tags = get_request_tags(self.request)
-        context['all_tags'] = Tag.objects.all()
+        #context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
         return context
 
@@ -137,12 +136,6 @@ class ListPurchasePage(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         recipes = self.request.user.purchase_by.all()
-        title = 'recipe__ingredients__title'
-        dimension = 'recipe__ingredients__unit__dimension'
-        quantity = 'recipe__ingredients_amounts__quantity'
-        ingredients = (self.request.user.purchase_by.select_related('recipe').
-                       order_by(title).values(title, dimension).annotate(
-            amount=Sum(quantity)).all())
         return recipes
 
 

@@ -1,7 +1,8 @@
-from django import template
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-from recipes.models import Follow, Favorite, Purchase
+from django import template
+
+from recipes.models import Favorite, Purchase, Tag
 
 register = template.Library()
 
@@ -14,7 +15,7 @@ def duration(td):
     return f'{minutes}  min.'
 
 
-@register.filter()
+@register.filter
 def convert_time_sec(td):
     if ':' in td:
         hours, minutes, seconds = td.split(':')
@@ -78,3 +79,8 @@ def is_favored_by(recipe, user):
 @register.filter
 def is_in_shop_list_of(recipe, user):
     return Purchase.objects.filter(recipe=recipe, user=user).exists()
+
+
+@register.simple_tag(name='get_all_tags')
+def all_tags():
+    return Tag.objects.all
