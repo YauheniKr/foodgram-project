@@ -5,7 +5,6 @@ from django.urls import reverse
 from .test_init import InitTest
 from datetime import timedelta
 from recipes.models import Recipe, RecipeIngredient, Ingredient, Unit, Tag
-from recipes.utils import get_request_tags
 
 
 class RecipeTests(InitTest):
@@ -15,6 +14,11 @@ class RecipeTests(InitTest):
             'index.html': reverse('index'),
             'formRecipe.html': reverse('add_recipe'),
             'singlePage.html': reverse('detail_recipe', args=[self.recipe.id]),
+            'formRecipe.html': reverse('update_recipe', args=[self.recipe.id]),
+            'myFollow.html': reverse('follow'),
+            'authorRecipe.html': reverse('author_page', args=[self.user.id]),
+            'favorite.html': reverse('favorate_page', args=[self.user.id]),
+            'shopList.html': reverse('purchase_page'),
         }
         self.templates_url_names = templates_url_names
 
@@ -36,3 +40,8 @@ class RecipeTests(InitTest):
         response = self.authorized_client.get(reverse('index'))
         self.assertEqual(response.context.get('object_list')[0].cooking_time,
                          self.cooking_time)
+
+    def test_correct_tag_render(self):
+        response = self.authorized_client.get(reverse('index'))
+        self.assertIn(response.context.get('object_list')[0].tags.all()[0],
+                      Tag.objects.all())

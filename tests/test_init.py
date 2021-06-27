@@ -16,7 +16,7 @@ class InitTest(TestCase):
         user = User.objects.create_user(username='testuser',
                                         password='12345')
         unit = Unit.objects.create(dimension='г')
-        tags = Tag.objects.create(title='breakfast', display_name='Завтрак',
+        tags = Tag.objects.create(title='Завтрак', display_name='Breakfast',
                                   color='orange')
         ingr1 = Ingredient.objects.create(title='ингр1',
                                           unit=unit)
