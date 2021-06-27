@@ -54,11 +54,13 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['all_tags'] = Tag.objects.all()
         return context
 
+    def get_object(self, queryset=None):
+        return Recipe.objects.get(id=self.kwargs["pk"])
+
     def form_valid(self, form):
-        instance = Recipe.objects.get(id=self.kwargs["pk"])
+        instance = self.get_object()
         edit_recipe(self.request, form, instance)
         return super().form_valid(form)
 
@@ -104,7 +106,6 @@ class ListRecipeAuthorPage(ListView):
         tags = get_request_tags(self.request)
         author = self.kwargs.get('pk')
         author_recipes = get_object_or_404(User, id=author)
-        #context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
         context['author'] = author_recipes
         return context
@@ -125,7 +126,6 @@ class ListFavoritePage(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tags = get_request_tags(self.request)
-        #context['all_tags'] = Tag.objects.all()
         context['tags'] = tags
         return context
 
