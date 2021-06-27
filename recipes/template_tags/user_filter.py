@@ -8,7 +8,6 @@ register = template.Library()
 
 
 def __remove_tag(tag, tags):
-    print(tag, tags)
     if tag.title in tags:
         tags.remove(tag.title)
     else:
