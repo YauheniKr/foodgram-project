@@ -16,5 +16,6 @@ urlpatterns = [
          name='favorate_page'),
     path('purchases/', ListPurchasePage.as_view(),
          name='purchase_page'),
-    path('download_purchases/', DownloadPurchasePage.as_view(), name='download_purchases')
+    path('download_purchases/', DownloadPurchasePage.as_view(),
+         name='download_purchases')
 ]
