@@ -68,5 +68,3 @@ class UserTests(InitTest):
         """Проверяем редирект auth пользователя со страницы login"""
         response = self.authorized_client.get(reverse('login'))
         self.assertRedirects(response, reverse('index'))
-
-
