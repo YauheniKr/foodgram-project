@@ -10,7 +10,7 @@ from recipes.models import Unit, Ingredient
 
 django.setup()
 
-file_path = '../static/ingredients.json'
+file_path = 'ingredients.json'
 
 with open(file_path) as file:
     f = json.load(file)

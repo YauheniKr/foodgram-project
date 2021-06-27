@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'user',
     'recipes',
+    'about',
 ]
 
 MIDDLEWARE = [
