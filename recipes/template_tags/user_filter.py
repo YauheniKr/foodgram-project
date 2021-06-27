@@ -7,6 +7,15 @@ from recipes.models import Favorite, Purchase, Tag
 register = template.Library()
 
 
+def __remove_tag(tag, tags):
+    print(tag, tags)
+    if tag.title in tags:
+        tags.remove(tag.title)
+    else:
+        return
+    return __remove_tag(tag, tags)
+
+
 @register.filter
 def duration(td):
     total_seconds = int(td.total_seconds())
@@ -41,7 +50,7 @@ def set_tag_qs(request, tag):
     tags = new_req.getlist('tag')
 
     if tag.title in tags:
-        tags.remove(tag.title)
+        __remove_tag(tag, tags)
     else:
         tags.append(tag.title)
 
