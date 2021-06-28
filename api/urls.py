@@ -11,5 +11,5 @@ router.register(r'favorites', FavoriteViewSet, 'favorites')
 router.register(r'purchases', PurchaseViewSet, 'purchases')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('v1/', include(router.urls)),
 ]

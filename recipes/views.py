@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView, CreateView, UpdateView, View
 
 from .forms import RecipeForm
-from .models import Recipe, Tag, User
+from .models import Recipe, User
 from .utils import get_request_tags, save_recipe, edit_recipe
 
 
@@ -56,9 +56,6 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         return context
 
-    def get_object(self, queryset=None):
-        return Recipe.objects.get(id=self.kwargs["pk"])
-
     def form_valid(self, form):
         instance = self.get_object()
         edit_recipe(self.request, form, instance)
@@ -77,9 +74,9 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class ListFollowingPage(LoginRequiredMixin, View):
 
     def get(self, request):
-        authors = User.objects.filter(following__user=self.request.user). \
-            prefetch_related('recipes').order_by('username'). \
-            annotate(recipe_count=Count('recipes'))
+        authors = (User.objects.filter(following__user=self.request.user).
+                   prefetch_related('recipes').order_by('username').
+                   annotate(recipe_count=Count('recipes')))
         paginator = Paginator(authors, 10)
         page_number = self.request.GET.get('page')
         page = paginator.get_page(page_number)

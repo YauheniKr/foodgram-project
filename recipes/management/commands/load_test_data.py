@@ -11,7 +11,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        print(os.path.dirname(os.path.dirname(current_dir)))
         file_path = (os.path.dirname(os.path.dirname(current_dir)) +
                      '\ingredients.json')
 
