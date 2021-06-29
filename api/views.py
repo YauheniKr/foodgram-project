@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework import viewsets, filters
+from rest_framework import filters, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from recipes.models import Ingredient, Follow, User, Recipe, Favorite, Purchase
-from .serializers import (IngredientSerializer, SubscriptionSerializer,
-                          FavoriteSerializer, PurchaseSerializer)
+from recipes.models import Favorite, Follow, Ingredient, Purchase, Recipe, User
+
+from .serializers import (FavoriteSerializer, IngredientSerializer,
+                          PurchaseSerializer, SubscriptionSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

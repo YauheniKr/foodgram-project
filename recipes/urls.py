@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import (HomePage, AddRecipePage, DetailRecipePage, EditRecipePage,
-                    ListFollowingPage, ListRecipeAuthorPage, ListFavoritePage,
-                    ListPurchasePage, DownloadPurchasePage)
+from .views import (AddRecipePage, DetailRecipePage, DownloadPurchasePage,
+                    EditRecipePage, HomePage, ListFavoritePage,
+                    ListFollowingPage, ListPurchasePage, ListRecipeAuthorPage)
 
 urlpatterns = [
     path('', HomePage.as_view(), name='index'),

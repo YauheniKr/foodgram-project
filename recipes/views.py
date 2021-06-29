@@ -1,15 +1,14 @@
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        UserPassesTestMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import HttpResponse, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
-from django.views.generic import ListView, CreateView, UpdateView, View
+from django.views.generic import (CreateView, DetailView, ListView, UpdateView,
+                                  View)
 
 from .forms import RecipeForm
 from .models import Recipe, User
-from .utils import get_request_tags, save_recipe, edit_recipe
+from .utils import edit_recipe, get_request_tags, save_recipe
 
 
 class HomePage(ListView):
@@ -35,7 +34,7 @@ class AddRecipePage(LoginRequiredMixin, CreateView):
     form_class = RecipeForm
 
     def form_valid(self, form):
-        recipe = save_recipe(self.request, form)
+        save_recipe(self.request, form)
         return super().form_valid(form)
 
 

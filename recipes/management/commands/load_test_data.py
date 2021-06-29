@@ -3,7 +3,7 @@ import os
 
 from django.core.management.base import BaseCommand
 
-from recipes.models import Unit, Ingredient
+from recipes.models import Ingredient, Unit
 
 
 class Command(BaseCommand):
@@ -11,8 +11,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = (os.path.dirname(os.path.dirname(current_dir)) +
-                     '\ingredients.json')
+        directory = os.path.dirname(os.path.dirname(current_dir))
+        file = 'ingredients.json'
+        file_path = directory + '\\' + file
 
         with open(file_path) as file:
             f = json.load(file)

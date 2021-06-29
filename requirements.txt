@@ -26,3 +26,5 @@ sorl-thumbnail==12.6.3
 django-autoslug==1.9.8
 djangorestframework
 django-filter
+isort
+flake8
