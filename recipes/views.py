@@ -67,7 +67,8 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         obj = self.get_object()
-        return obj.author == self.request.user or self.request.user.is_superuser
+        return obj.author == (self.request.user
+                              or self.request.user.is_superuser)
 
 
 class ListFollowingPage(LoginRequiredMixin, View):

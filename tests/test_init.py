@@ -1,7 +1,9 @@
-from django.test import Client, TestCase
-from django.contrib.auth import get_user_model
 from datetime import timedelta
-from recipes.models import Recipe, RecipeIngredient, Ingredient, Unit, Tag
+
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+
+from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag, Unit
 
 User = get_user_model()
 

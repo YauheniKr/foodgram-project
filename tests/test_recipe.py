@@ -1,10 +1,8 @@
-import datetime
-
 from django.urls import reverse
 
+from recipes.models import Tag
+
 from .test_init import InitTest
-from datetime import timedelta
-from recipes.models import Recipe, RecipeIngredient, Ingredient, Unit, Tag
 
 
 class RecipeTests(InitTest):

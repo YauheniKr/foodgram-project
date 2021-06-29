@@ -45,7 +45,8 @@ class FavoriteViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         recipe = get_object_or_404(Recipe, id=kwargs.get('recipe'))
-        instance = get_object_or_404(Favorite, recipe=recipe, user=request.user)
+        instance = get_object_or_404(Favorite,
+                                     recipe=recipe, user=request.user)
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
