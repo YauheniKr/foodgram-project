@@ -40,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: smildon/foodgram:1.01
+          tags: smildon/foodgram:latest
 
   copy_configs:
     runs-on: ubuntu-latest
