@@ -72,7 +72,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            cd foodgram
             sudo docker-compose stop
             sudo docker-compose rm web
             touch .env
