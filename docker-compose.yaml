@@ -5,7 +5,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - .foodgram_project/.env
 
   web:
     image: smildon/foodgram:latest
@@ -16,10 +16,10 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env
+      - .foodgram_project/.env
 
   nginx:
-    image: nginx:alpine
+    image: nginx:1.19.10
     ports:
       - 80:80
       - 443:443
