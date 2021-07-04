@@ -9,7 +9,6 @@ django-environ
 idna
 oauthlib
 pip
-psycopg2
 pycparser
 python3-openid
 pytz
@@ -22,6 +21,7 @@ urllib3
 wheel
 gunicorn
 pillow
+psycopg2
 sorl-thumbnail==12.6.3
 django-autoslug==1.9.8
 djangorestframework
