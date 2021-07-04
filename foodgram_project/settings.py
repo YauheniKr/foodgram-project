@@ -9,7 +9,7 @@ env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env()
 
 DEBUG = env('DEBUG')
-env('SECRET_KEY', default='123456')
+SECRET_KEY = env('SECRET_KEY', default='123456')
 
 ALLOWED_HOSTS = ['*']
 
