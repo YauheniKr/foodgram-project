@@ -13,7 +13,7 @@ class Command(BaseCommand):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         directory = os.path.dirname(os.path.dirname(current_dir))
         file = 'ingredients.json'
-        file_path = directory + '\\' + file
+        file_path = os.path.join(os.path.abspath(directory), file)
 
         with open(file_path) as file:
             f = json.load(file)
