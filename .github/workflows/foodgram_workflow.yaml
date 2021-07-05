@@ -84,7 +84,7 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DEBUG=off >> .env
-            sudo docker-compose up -d
+            sudo docker-compose up -d --force-recreate
       - name: Prepare django
         uses: appleboy/ssh-action@master
         with:
