@@ -112,12 +112,10 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
-STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
+STATIC_ROOT = str(BASE_DIR.joinpath('static'))
 
 MEDIA_URL = '/media/'
-MEDIAFILES_DIRS = (str(BASE_DIR.joinpath('media')),)
-MEDIA_ROOT = str(BASE_DIR.joinpath('mediafiles'))
+MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
