@@ -106,6 +106,7 @@ jobs:
             id=$(docker create ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest)
             FILE=docker-compose.yml
             echo $id
+            cd foodgram
             sudo docker rm -v $id
             sudo docker stop $(sudo docker ps -a -q) > /dev/null 2>&1
             sudo docker kill $(sudo docker ps -a -q) > /dev/null 2>&1
