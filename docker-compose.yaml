@@ -12,8 +12,6 @@ services:
     image: smildon/foodgram:latest
     container_name: web
     restart: always
-    ports:
-      - 1022:22
     volumes:
       - static_value:/code/static/
       - media_value:/code/media/
