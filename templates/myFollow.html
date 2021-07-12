@@ -17,8 +17,8 @@
 {% block content %}
     {% for author in authors %}
         {% include 'includes/card_small.html' with author=author %}
-        {% include 'includes/pagination.html' %}
     {% endfor %}
+        {% include 'includes/pagination.html' %}
 {% endblock %}
 {% block js %}
     <script src="{% static './js/config/config.js' %}"></script>
