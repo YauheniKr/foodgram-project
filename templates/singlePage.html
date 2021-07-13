@@ -43,8 +43,9 @@
                         {% include 'includes/purchase_button.html' %}
                     </li>
                     {% if request.user != recipe.author %}
-                        {% csrf_token %}
-                        <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></li>
+                        <li class="single-card__item">
+                            {% include 'includes/follow_author.html' with author=recipe.author p=False %}
+                        </li>
                     {% endif %}
                 </ul>
             {% endif %}
