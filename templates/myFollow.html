@@ -15,9 +15,11 @@
     </div>
 {% endblock %}
 {% block content %}
+    <div class="card-list">
     {% for author in authors %}
         {% include 'includes/card_small.html' with author=author %}
     {% endfor %}
+    </div>
         {% include 'includes/pagination.html' %}
 {% endblock %}
 {% block js %}
