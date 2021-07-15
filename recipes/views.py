@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
@@ -8,7 +9,7 @@ from django.views.generic import (CreateView, DetailView, ListView, UpdateView,
 
 from .forms import RecipeForm
 from .models import Recipe, User
-from .utils import edit_recipe, get_request_tags, save_recipe
+from .utils import edit_recipe, get_ingredients, get_request_tags, save_recipe
 
 
 class HomePage(ListView):
@@ -34,8 +35,16 @@ class AddRecipePage(LoginRequiredMixin, CreateView):
     form_class = RecipeForm
 
     def form_valid(self, form):
-        save_recipe(self.request, form)
+        try:
+            ingredients = get_ingredients(self.request.POST)
+        except forms.ValidationError as error:
+            form.errors.update({'ingredients': error.message})
+            return self.form_invalid(form)
+        save_recipe(self.request, ingredients, form)
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 
 class DetailRecipePage(DetailView):

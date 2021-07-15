@@ -62,9 +62,9 @@
                         <input type="checkbox" name="tags" id="id_dinner" class="tags__checkbox tags__checkbox_style_purple" value="3">
                         <label for="id_dinner" class="tags__label">Ужин</label>
                     </div>
-                    <span class="form__error"></span>
                 {% endif %}
             </div>
+            <span class="form__error">{{ form.tags.errors }}</span>
         </div>
     </div>
     <div class="form__group">
@@ -91,7 +91,7 @@
                 {% endif %}
             </div>
             <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
-            <span class="form__error"></span>
+            <span class="form__error">{{ form.errors.ingredients }}</span>
         </div>
     </div>
     <div class="form__group">
