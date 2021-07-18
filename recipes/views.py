@@ -4,8 +4,8 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Sum
 from django.shortcuts import HttpResponse, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DetailView, ListView, UpdateView,
-                                  View)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView, View)
 
 from .forms import RecipeForm
 from .models import Recipe, User
@@ -66,13 +66,31 @@ class EditRecipePage(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         instance = self.get_object()
-        edit_recipe(self.request, form, instance)
+        try:
+            edit_recipe(self.request, form, instance)
+        except forms.ValidationError as error:
+            form.errors.update({'ingredients': error.message})
+            return self.form_invalid(form)
         return super().form_valid(form)
 
     def get_success_url(self):
         args = self.kwargs["pk"]
         success_url = reverse_lazy('detail_recipe', args=[args])
         return success_url
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == (self.request.user
+                              or self.request.user.is_superuser)
+
+
+class DeleteRecipePage(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = Recipe
+    pk_url_kwarg = 'pk'
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
     def test_func(self):
         obj = self.get_object()

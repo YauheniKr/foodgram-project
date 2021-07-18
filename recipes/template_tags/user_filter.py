@@ -91,4 +91,4 @@ def is_in_shop_list_of(recipe, user):
 
 @register.simple_tag(name='get_all_tags')
 def all_tags():
-    return Tag.objects.all
+    return Tag.objects.all()

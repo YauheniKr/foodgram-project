@@ -22,7 +22,8 @@ def get_ingredients(request):
             ingredients['quantity'] = post[f'valueIngredient_{num}']
         elif key.startswith('unitsIngredient'):
             ingredients.update({'unit': name})
-            if ingredients in out:
+            test_ingredients = [o.get('name') for o in out]
+            if ingredients.get('name') in test_ingredients:
                 raise ValidationError('Нельзя добавить '
                                       '2 одинаковых ингредиента')
             out.append(ingredients)
@@ -57,6 +58,7 @@ def save_recipe(request, ingredients, form):
 
 
 def edit_recipe(request, form, instance):
+    ingredients = get_ingredients(request.POST)
     with transaction.atomic():
         RecipeIngredient.objects.filter(recipe=instance).delete()
-        return save_recipe(request, form)
+        return save_recipe(request, ingredients, form)

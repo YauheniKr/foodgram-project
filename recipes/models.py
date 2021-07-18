@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
@@ -46,7 +48,11 @@ class Recipe(models.Model):
                               verbose_name='Картинка рецепта')
     text = models.TextField(verbose_name='Изображение блюда')
     slug = AutoSlugField(populate_from='title', allow_unicode=True)
-    cooking_time = models.DurationField(verbose_name='Время приготовления')
+    cooking_time = models.DurationField(verbose_name='Время приготовления',
+                                        validators=[MinValueValidator(
+                                            timedelta(seconds=1),
+                                            message='Время приготовления '
+                                                    'должно быть больше 0')])
     ingredients = models.ManyToManyField(Ingredient,
                                          verbose_name='Ингредиенты рецепта',
                                          through='RecipeIngredient')
