@@ -19,6 +19,10 @@ def get_ingredients(request):
         if key.startswith('nameIngredient'):
             num = key.partition('_')[-1]
             ingredients['name'] = name
+            quantity = post[f'valueIngredient_{num}']
+            if Decimal(quantity.replace(',', '.')) <= 0:
+                raise ValidationError('Количество ингредиента должно '
+                                      'быть больше 0')
             ingredients['quantity'] = post[f'valueIngredient_{num}']
         elif key.startswith('unitsIngredient'):
             ingredients.update({'unit': name})
